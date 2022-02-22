@@ -7,8 +7,10 @@
 
 package wniemiec.io.java;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
 
 /**
  * Standard manager of terminal output.
@@ -19,8 +21,10 @@ class StandardOutputTerminal implements OutputTerminal {
     //		Attributes
     //-------------------------------------------------------------------------
     private static final Consumer<String> NULL_HANDLER;
-    private Consumer<String> outputHandler;
-    private Consumer<String> outputErrorHandler;
+    private final Consumer<String> outputHandler;
+    private final Consumer<String> outputErrorHandler;
+    private final List<String> history;
+    private final List<String> errorHistory;
 
 
     //-------------------------------------------------------------------------
@@ -40,28 +44,44 @@ class StandardOutputTerminal implements OutputTerminal {
      * @param       outputHandler
      * @param       outputErrorHandler
      */
-    public StandardOutputTerminal(Consumer<String> outputHandler, Consumer<String> outputErrorHandler) {
-        this.outputHandler = (outputHandler == null) ? NULL_HANDLER : outputHandler;
-        this.outputErrorHandler = (outputErrorHandler == null) ? NULL_HANDLER : outputErrorHandler;
+    public StandardOutputTerminal(
+        Consumer<String> outputHandler, 
+        Consumer<String> outputErrorHandler
+    ) {
+        this.outputHandler = parseHandler(outputHandler);
+        this.outputErrorHandler = parseHandler(outputErrorHandler);
+        history = new ArrayList<>();
+        errorHistory = new ArrayList<>();
     }
 
 
     //-------------------------------------------------------------------------
     //		Methods
     //-------------------------------------------------------------------------
-    @Override
-    public void receive(String line) {
-        outputHandler.accept(line);
+    private Consumer<String> parseHandler(Consumer<String> handler) {
+        if (handler == null) {
+            return NULL_HANDLER;
+        }
+
+        return handler;
     }
 
     @Override
-    public void receiveError(String line) {
-        outputErrorHandler.accept(line);
+    public void receive(String message) {
+        outputHandler.accept(message);
+        history.add(message);
+    }
+
+    @Override
+    public void receiveError(String message) {
+        outputErrorHandler.accept(message);
+        errorHistory.add(message);
     }
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
+        history.clear();
+        errorHistory.clear();
     }
 
 
@@ -70,13 +90,11 @@ class StandardOutputTerminal implements OutputTerminal {
     //-------------------------------------------------------------------------
     @Override
     public List<String> getHistory() {
-        // TODO Auto-generated method stub
-        return null;
+        return history;
     }
 
     @Override
     public List<String> getErrorHistory() {
-        // TODO Auto-generated method stub
-        return null;
+        return errorHistory;
     }
 }

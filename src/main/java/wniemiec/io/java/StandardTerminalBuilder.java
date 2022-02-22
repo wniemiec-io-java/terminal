@@ -10,6 +10,7 @@ package wniemiec.io.java;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+
 /**
  * Responsible for creating standard terminal.
  */

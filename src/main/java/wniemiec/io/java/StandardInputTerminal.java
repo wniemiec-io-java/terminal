@@ -10,6 +10,7 @@ package wniemiec.io.java;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 
@@ -53,7 +54,7 @@ class StandardInputTerminal implements InputTerminal {
     //		Methods
     //-------------------------------------------------------------------------
     @Override
-    public void exec(String[] commands) throws IOException {
+    public void exec(String... commands) throws IOException {
         Process process = runTerminal(commands);
      
         readOutput(process);
@@ -69,18 +70,22 @@ class StandardInputTerminal implements InputTerminal {
     }
 
     private void readOutput(Process process) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        for (String line = ""; line != null; line = reader.readLine()) {
-            outputTerminal.receive(line);
+        try (BufferedReader buffer = buildInputStream(process.getInputStream())) {
+            for (String line = ""; line != null; line = buffer.readLine()) {
+                outputTerminal.receive(line);
+            }
         }
     }
 
-    private void readErrorOutput(Process process) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+    private BufferedReader buildInputStream(InputStream stream) {
+        return new BufferedReader(new InputStreamReader(stream));
+    }
 
-        for (String line = ""; line != null; line = reader.readLine()) {
-            outputTerminal.receiveError(line);
+    private void readErrorOutput(Process process) throws IOException {
+        try (BufferedReader buffer = buildInputStream(process.getErrorStream())) {
+            for (String line = ""; line != null; line = buffer.readLine()) {
+                outputTerminal.receiveError(line);
+            }
         }
     }
 }
