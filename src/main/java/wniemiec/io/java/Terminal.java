@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Responsible for managing terminal.
+ * Utility for executing commands in a terminal.
  */
 public class Terminal {
 
@@ -56,7 +56,7 @@ public class Terminal {
     }
 
     /**
-     * Run commands in terminal.
+     * Runs commands in terminal.
      * 
      * @param       commands Terminal commands
      * 
@@ -86,10 +86,20 @@ public class Terminal {
     //-------------------------------------------------------------------------
     //		Getters
     //-------------------------------------------------------------------------
+    /**
+     * Retrieves terminal message history.
+     * 
+     * @return      Terminal history
+     */
     public List<String> getHistory() {
         return outputTerminal.getHistory();
     }
 
+    /**
+     * Retrieves terminal error message history.
+     * 
+     * @return      Terminal history
+     */
     public List<String> getErrorHistory() {
         return outputTerminal.getErrorHistory();
     }

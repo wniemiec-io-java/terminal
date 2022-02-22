@@ -44,7 +44,7 @@ class StandardInputTerminal implements InputTerminal {
             throw new IllegalArgumentException("Output terminal cannot be null");
         }
 
-        this.workingDirectory = workingDirectory.toFile();
+        this.workingDirectory = (workingDirectory == null) ? null : workingDirectory.toFile();
         this.outputTerminal = outputTerminal;
         runtime = Runtime.getRuntime();
     }

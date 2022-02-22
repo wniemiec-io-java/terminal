@@ -19,11 +19,32 @@ public class StandardTerminalBuilder {
     //-------------------------------------------------------------------------
     //		Attributes
     //-------------------------------------------------------------------------
+    private static StandardTerminalBuilder instance;
     private InputTerminal inputTerminal;
     private OutputTerminal outputTerminal;
     private Path workingDirectory;
     private Consumer<String> outputHandler;
     private Consumer<String> outputErrorHandler;
+
+
+
+    //-------------------------------------------------------------------------
+    //		Constructor
+    //-------------------------------------------------------------------------
+    private StandardTerminalBuilder() {
+    }
+
+
+    //-------------------------------------------------------------------------
+    //		Factory
+    //-------------------------------------------------------------------------
+    public static StandardTerminalBuilder getInstance() {
+        if (instance == null) {
+            instance = new StandardTerminalBuilder();
+        }
+
+        return instance;
+    }
     
 
     //-------------------------------------------------------------------------
@@ -47,18 +68,6 @@ public class StandardTerminalBuilder {
         return this;
     }
 
-    public StandardTerminalBuilder inputTerminal(InputTerminal inputTerminal) {
-        this.inputTerminal = inputTerminal;
-
-        return this;
-    }
-
-    public StandardTerminalBuilder outputTerminal(OutputTerminal outputTerminal) {
-        this.outputTerminal = outputTerminal;
-
-        return this;
-    }
-
     public Terminal build() {
         buildOutputTerminal();
         buildInputTerminal();
@@ -67,18 +76,10 @@ public class StandardTerminalBuilder {
     }
 
     private void buildOutputTerminal() {
-        if (outputTerminal != null) {
-            return;
-        }
-
         outputTerminal = new StandardOutputTerminal(outputHandler, outputErrorHandler);
     }
 
     private void buildInputTerminal() {
-        if (inputTerminal != null) {
-            return;
-        }
-
         inputTerminal = new StandardInputTerminal(workingDirectory, outputTerminal);
     }
 
