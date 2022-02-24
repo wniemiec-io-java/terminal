@@ -25,7 +25,7 @@ class StandardTerminalBuilderTest {
 
         runUniversalCommand(terminal);
 
-        Assertions.assertEquals(1, terminal.getErrorHistory().size());
+        Assertions.assertEquals(0, terminal.getErrorHistory().size());
     }
 
     private void runUniversalCommand(Terminal terminal) throws IOException {
@@ -56,7 +56,7 @@ class StandardTerminalBuilderTest {
 
         runUniversalCommand(terminal);
 
-        Assertions.assertEquals("", obtainedOutputErrorMessage);
+        Assertions.assertEquals(null, obtainedOutputErrorMessage);
     }
 
     @Test
@@ -71,6 +71,6 @@ class StandardTerminalBuilderTest {
         runUniversalCommand(terminal);
 
         Assertions.assertEquals("hello", obtainedOutputMessage);
-        Assertions.assertEquals("", obtainedOutputErrorMessage);
+        Assertions.assertEquals(null, obtainedOutputErrorMessage);
     }
 }

@@ -6,7 +6,7 @@
 
   <groupId>io.github.wniemiec-io-java</groupId>
   <artifactId>terminal</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>Terminal</name>
   <description>Utility for executing commands in a terminal.</description>
   <url>https://github.com/wniemiec-io-java/terminal</url>

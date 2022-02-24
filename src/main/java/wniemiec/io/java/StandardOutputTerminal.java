@@ -74,6 +74,10 @@ class StandardOutputTerminal implements OutputTerminal {
 
     @Override
     public void receiveError(String message) {
+        if (message.isBlank()) {
+            return;
+        }
+        
         outputErrorHandler.accept(message);
         errorHistory.add(message);
     }
