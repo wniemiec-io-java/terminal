@@ -101,7 +101,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.0.2</version>
         <configuration>
-          <outputDirectory>${project.build.directory}/../dist/${version.major}.x</outputDirectory>
+          <outputDirectory>${project.basedir}/dist/${version.major}.x</outputDirectory>
         </configuration>
       </plugin>
 
